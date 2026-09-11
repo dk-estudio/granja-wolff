@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Huevos frescos de gallinas ponedoras. Granja Wolff, del campo a tu mesa." />
+    <title>Granja Wolff | Huevos frescos</title>
+    <link rel="icon" type="image/png" href="assets/logo-granja-wolff.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Granja Wolff | Huevos frescos" />
+    <meta property="og:description" content="Huevos frescos de gallinas ponedoras Lohmann Brown, del nido a tu mesa. Pedidos por WhatsApp." />
+    <meta property="og:image" content="assets/huevos-frescos.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --green: #553728;
+        --green-deep: #2f1f18;
+        --sage: #6e4f3b;
+        --cream: #eddcc7;
+        --paper: #f8f2ed;
+        --yolk: #d88d4b;
+        --yolk-soft: #f3c57a;
+        --ink: #2f1d18;
+        --muted: #5d4032;
+        --white: #ffffff;
+        --shadow: 0 20px 45px rgba(48, 28, 18, 0.12);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: linear-gradient(180deg, #efdfce 0%, #e4d2bf 100%);
+        font-family: "DM Sans", sans-serif;
+      }
+      h1,h2,h3,p { margin-top: 0; }
+      h1,h2,h3 { font-family: "Playfair Display", serif; }
+      a { transition: all 0.25s ease; }
+      .container { width: min(1120px, calc(100% - 40px)); margin: auto; }
+
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        padding: 18px 0;
+        color: var(--white);
+        background: transparent;
+        transition: background .3s ease, padding .3s ease, box-shadow .3s ease;
+      }
+      header.scrolled {
+        background: rgba(47, 25, 18, 0.92);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        padding: 12px 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+      }
+      section[id] { scroll-margin-top: 90px; }
+
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 26px;
+      }
+
+      .brand {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        color: var(--white);
+        text-decoration: none;
+        font-family: "Playfair Display", serif;
+        font-size: 1.33rem;
+        font-weight: 700;
+      }
+
+      .brand-mark {
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+        background: rgba(255,255,255,0.95);
+        border: 2px solid var(--yolk-soft);
+        border-radius: 50%;
+        padding: 2px;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.13);
+      }
+
+      .links { display: flex; gap: 28px; align-items: center; }
+      .links a {
+        color: rgba(255,255,255,0.9);
+        text-decoration: none;
+        font-size: .9rem;
+        font-weight: 600;
+      }
+      .links a:hover { color: var(--white); }
+
+      .nav-actions { display: flex; align-items: center; gap: 14px; }
+      .menu-toggle {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        width: 42px;
+        height: 42px;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.5);
+        border-radius: 10px;
+        cursor: pointer;
+        padding: 0;
+      }
+      .menu-toggle span {
+        display: block;
+        width: 18px;
+        height: 2px;
+        background: var(--white);
+        transition: transform .25s ease, opacity .25s ease;
+      }
+      .menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      .menu-toggle.open span:nth-child(2) { opacity: 0; }
+      .menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+      .menu-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(20,11,8,0.5);
+        z-index: 45;
+      }
+      .menu-backdrop.open { display: block; }
+
+      .mobile-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: min(78vw, 320px);
+        background: var(--green-deep);
+        padding: 100px 30px 40px;
+        transform: translateX(100%);
+        transition: transform .3s ease;
+        z-index: 46;
+      }
+      .mobile-menu.open { transform: translateX(0); }
+      .mobile-menu a {
+        color: var(--white);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.05rem;
+      }
+      .mobile-menu a.button { text-align: center; margin-top: 8px; }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 24px;
+        border: 0;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--yolk) 0%, #c67a3f 100%);
+        color: var(--white);
+        font-weight: 700;
+        text-decoration: none;
+        box-shadow: 0 12px 24px rgba(128, 76, 38, 0.22);
+        transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+      }
+      .button:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.02);
+        box-shadow: 0 16px 26px rgba(128, 76, 38, 0.28);
+      }
+      .button.outline {
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.7);
+        box-shadow: none;
+      }
+      .button.secondary {
+        background: var(--green);
+        color: var(--white);
+      }
+      .button.ghost {
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.5);
+      }
+
+      .hero {
+        min-height: 720px;
+        color: var(--white);
+        display: grid;
+        place-items: center;
+        text-align: center;
+        position: relative;
+        background: linear-gradient(rgba(58, 34, 26, 0.7), rgba(58, 34, 26, 0.82)), url('assets/gallinas-lohmann-brown.png') center/cover;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at top, rgba(252,213,134,0.18), transparent 44%);
+      }
+      .hero-content { padding-top: 85px; position: relative; z-index: 1; }
+      .eyebrow {
+        margin-bottom: 16px;
+        letter-spacing: .2em;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: .72rem;
+        color: #f5d2aa;
+      }
+      h1 {
+        font-size: clamp(3.4rem, 8vw, 6.8rem);
+        line-height: .98;
+        margin-bottom: 15px;
+      }
+      .hero h1 span {
+        display: block;
+        color: #f5d2aa;
+        font-size: .42em;
+        font-family: "DM Sans", sans-serif;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      .hero .subtitle {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.25rem, 2.4vw, 1.9rem);
+        font-style: italic;
+        margin-bottom: 30px;
+        color: rgba(255,255,255,0.96);
+      }
+      .scroll {
+        position: absolute;
+        bottom: 38px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: .7rem;
+        letter-spacing: .16em;
+        font-weight: 700;
+        white-space: nowrap;
+        color: rgba(255,255,255,0.9);
+      }
+      .scroll::after { content: '⌄'; display: block; font-size: 25px; line-height: 14px; }
+
+      section { padding: 100px 0; }
+      .intro { display: grid; grid-template-columns: 1fr 1fr; gap: 76px; align-items: center; }
+      .photo {
+        min-height: 440px;
+        background: url('assets/huevos-frescos.png') center/cover;
+        border-radius: 3px 64px 3px 64px;
+        position: relative;
+        box-shadow: var(--shadow);
+      }
+      .photo::after {
+        content: 'Desde la granja';
+        position: absolute;
+        right: -24px;
+        bottom: 28px;
+        background: linear-gradient(135deg, var(--yolk) 0%, #c77a44 100%);
+        color: var(--white);
+        font: italic 1.1rem "Playfair Display", serif;
+        padding: 15px 24px;
+        border-radius: 999px;
+      }
+      h2 {
+        font-size: clamp(2.25rem, 4vw, 3.65rem);
+        line-height: 1.08;
+        margin-bottom: 20px;
+        color: var(--green);
+      }
+      .copy { color: var(--muted); line-height: 1.75; }
+      .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 27px; }
+      .badge {
+        padding: 9px 13px;
+        background: #ead9ca;
+        border-radius: 999px;
+        font-size: .86rem;
+        font-weight: 600;
+        color: var(--green);
+      }
+      .section-head { max-width: 620px; margin: auto auto 44px; text-align: center; }
+      .section-head p { color: var(--muted); line-height: 1.6; }
+
+      .values { background: var(--green); color: var(--white); }
+      .values h2 { color: var(--white); }
+      .values .section-head p { color: #ead9ca; }
+      .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+      .value {
+        padding: 29px 22px;
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 16px;
+        background: rgba(255,255,255,0.03);
+      }
+      .value b { display: block; font-size: 2rem; margin-bottom: 16px; }
+      .value h3 { margin-bottom: 8px; font-size: 1.05rem; }
+      .value p { margin: 0; color: #f1e3d7; line-height: 1.55; font-size: .9rem; }
+
+      .products { background: var(--paper); }
+      .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 23px; }
+      .product {
+        overflow: hidden;
+        background: var(--white);
+        border: 1px solid #dec5b2;
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+      }
+      .product-image { height: 230px; background-position: center; background-size: cover; }
+      .product:nth-child(1) .product-image { background-image: url('assets/huevos-frescos.png'); }
+      .product:nth-child(2) .product-image { background-image: url('assets/gallina-detalle.jpeg'); }
+      .product:nth-child(3) .product-image { background-image: url('assets/gallinas-grupo.jpeg'); }
+      .product-body { padding: 23px; }
+      .video-wrap {
+        margin-top: 28px;
+        background: var(--green-deep);
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+      .video-wrap video {
+        display: block;
+        width: 100%;
+        max-height: 520px;
+        object-fit: cover;
+        background: #000;
+      }
+      .product h3 { font: 600 1.45rem "Playfair Display", serif; color: var(--green); margin-bottom: 10px; }
+      .product p { color: var(--muted); line-height: 1.6; margin-bottom: 19px; font-size: .92rem; }
+      .product a { color: var(--green); font-weight: 700; text-decoration: none; }
+      .product a:hover { color: var(--yolk); }
+
+      .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; position: relative; }
+      .step-num {
+        width: 46px;
+        height: 46px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--yolk) 0%, #c77a44 100%);
+        border-radius: 50%;
+        color: var(--white);
+        font-weight: 700;
+        margin-bottom: 17px;
+      }
+      .step h3 { margin-bottom: 8px; color: var(--green); }
+      .step p { margin: 0; color: var(--muted); line-height: 1.6; font-size: .92rem; }
+
+      .delivery {
+        color: var(--white);
+        text-align: center;
+        background: linear-gradient(rgba(65,38,30,0.82), rgba(65,38,30,0.82)), url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=1900&q=80') center/cover;
+      }
+      .delivery h2 { color: var(--white); }
+      .zones { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+      .zone {
+        min-width: 185px;
+        padding: 19px;
+        border: 1px solid rgba(255,255,255,0.32);
+        background: rgba(255,255,255,0.06);
+        border-radius: 12px;
+      }
+      .zone b { display: block; font-size: 1.1rem; margin-bottom: 5px; }
+      .zone small { color: #f1e3d7; }
+
+      .contact { padding: 90px 0; }
+      .contact-box {
+        display: grid;
+        grid-template-columns: 1.2fr .8fr;
+        gap: 35px;
+        align-items: center;
+        padding: 50px;
+        background: linear-gradient(135deg, #e7d2b8 0%, #d9bf9d 100%);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+      }
+      .contact-box h2 { margin-bottom: 12px; }
+      .contact-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+      .contact-card {
+        background: rgba(255,255,255,0.9);
+        padding: 25px;
+        border-radius: 16px;
+        border: 1px solid rgba(90, 57, 42, 0.06);
+      }
+      .contact-card p { margin: 0 0 12px; color: var(--muted); }
+      .contact-card strong { color: var(--green); font-size: 1.08rem; }
+      .contact-list { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 10px; }
+      .contact-list a { color: var(--green); text-decoration: none; font-weight: 700; }
+      .contact-list a:hover { color: var(--yolk); }
+      .muted-note { color: var(--muted); margin-top: 10px; font-size: .92rem; }
+
+      .wa-float {
+        position: fixed;
+        right: 22px;
+        bottom: 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, #27d366 0%, #1eaf56 100%);
+        color: var(--white);
+        border-radius: 50%;
+        font-size: 1.8rem;
+        box-shadow: 0 14px 28px rgba(39, 211, 102, 0.42);
+        z-index: 20;
+        text-decoration: none;
+      }
+      .wa-float:hover { transform: translateY(-2px) scale(1.02); }
+
+      footer { color: #f1e3d7; background: #41261e; padding: 35px 0; }
+      .footer { display: flex; justify-content: space-between; align-items: center; gap: 20px; font-size: .87rem; }
+      footer .brand { font-size: 1.15rem; }
+
+      @media (max-width: 800px) {
+        .links { display: none; }
+        .menu-toggle { display: flex; }
+        .hero { min-height: 650px; }
+        section { padding: 70px 0; }
+        .intro, .contact-box { grid-template-columns: 1fr; gap: 34px; }
+        .photo { min-height: 340px; order: 2; }
+        .grid, .steps { grid-template-columns: repeat(2, 1fr); }
+        .product-grid { grid-template-columns: 1fr; }
+        .contact-box { padding: 30px; }
+      }
+      @media (max-width: 440px) {
+        .grid, .steps { grid-template-columns: 1fr; }
+        .brand { font-size: 1.1rem; }
+        .brand-mark { width: 40px; height: 40px; }
+        .button { padding: 12px 18px; }
+        .wa-float { width: 56px; height: 56px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="container">
+        <a class="brand" href="#inicio"><img class="brand-mark" src="assets/logo-granja-wolff.png" alt="Logo de Granja Wolff" />Granja Wolff</a>
+        <div class="links">
+          <a href="#nosotros">Nosotros</a>
+          <a href="#huevos">Huevos</a>
+          <a href="#como-funciona">Cómo funciona</a>
+          <a href="#entregas">Entregas</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+        <div class="nav-actions">
+          <a class="button" href="#contacto">Pedí los tuyos</a>
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <div class="menu-backdrop" id="menuBackdrop"></div>
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Menú mobile">
+      <a href="#nosotros">Nosotros</a>
+      <a href="#huevos">Huevos</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#entregas">Entregas</a>
+      <a href="#contacto">Contacto</a>
+      <a class="button" href="#contacto">Pedí los tuyos</a>
+    </nav>
+
+    <main>
+      <section class="hero" id="inicio">
+        <div class="hero-content container">
+          <p class="eyebrow">Huevos frescos · crianza responsable</p>
+          <h1><span>Granja Wolff</span>Del nido a tu mesa</h1>
+          <p class="subtitle">Huevos frescos de nuestras gallinas ponedoras</p>
+          <a class="button" href="#contacto">Hacer mi pedido</a>
+        </div>
+        <div class="scroll">SEGUÍ SCROLLEANDO</div>
+      </section>
+
+      <section id="nosotros">
+        <div class="container intro">
+          <div class="photo" role="img" aria-label="Huevos frescos de Granja Wolff"></div>
+          <div>
+            <p class="eyebrow" style="color:var(--sage)">Sobre Granja Wolff</p>
+            <h2>Frescura que se nota desde el primer huevo</h2>
+            <p class="copy">En Granja Wolff cuidamos a nuestras gallinas Lohmann Brown todos los días para llevar a tu mesa huevos frescos, sabrosos y de origen conocido.</p>
+            <p class="copy">Creemos en el trabajo cercano, la crianza responsable y el valor de elegir alimentos simples, de calidad y directos de la granja.</p>
+            <div class="badges">
+              <span class="badge">🐔 Gallinas Lohmann Brown</span>
+              <span class="badge">🥚 Recolectados a diario</span>
+              <span class="badge">🌿 Crianza responsable</span>
+              <span class="badge">🚚 Venta directa</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="values">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow">Nuestra promesa</p>
+            <h2>Lo bueno empieza en la granja</h2>
+            <p>Trabajamos cada etapa con dedicación para que recibas huevos de confianza.</p>
+          </div>
+          <div class="grid">
+            <article class="value"><b>🐔</b><h3>Lohmann Brown</h3><p>Gallinas ponedoras seleccionadas, reconocidas por la calidad de sus huevos.</p></article>
+            <article class="value"><b>☀️</b><h3>Más frescos</h3><p>Huevos recolectados y preparados para llegar a vos con máxima frescura.</p></article>
+            <article class="value"><b>🌱</b><h3>Origen conocido</h3><p>Sabés de dónde viene lo que llevás a la mesa: nuestra propia granja.</p></article>
+            <article class="value"><b>🤝</b><h3>Atención cercana</h3><p>Pedidos simples y trato directo, como debe ser entre vecinos.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="products" id="huevos">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow" style="color:var(--sage)">Nuestros productos</p>
+            <h2>Huevos para cada momento</h2>
+            <p>Elegí la presentación que más te convenga y escribinos para consultar disponibilidad.</p>
+          </div>
+          <div class="product-grid">
+            <article class="product">
+              <div class="product-image"></div>
+              <div class="product-body">
+                <h3>Docena fresca</h3>
+                <p>La medida ideal para tener siempre huevos de granja en casa, listos para tus comidas favoritas.</p>
+                <a href="#contacto">Consultar pedido →</a>
+              </div>
+            </article>
+            <article class="product">
+              <div class="product-image"></div>
+              <div class="product-body">
+                <h3>Maple de 30</h3>
+                <p>Una opción práctica para familias, emprendimientos y quienes buscan comprar en mayor cantidad.</p>
+                <a href="#contacto">Consultar pedido →</a>
+              </div>
+            </article>
+            <article class="product">
+              <div class="product-image"></div>
+              <div class="product-body">
+                <h3>Para tu negocio</h3>
+                <p>Abastecimiento para comercios, panaderías y gastronomía. Consultá por compras recurrentes.</p>
+                <a href="#contacto">Consultar pedido →</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="como-funciona">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow" style="color:var(--sage)">Así de fácil</p>
+            <h2>Tu pedido en cuatro pasos</h2>
+            <p>De nuestra granja a tu cocina, sin vueltas.</p>
+          </div>
+          <div class="steps">
+            <article class="step"><div class="step-num">1</div><h3>Nos escribís</h3><p>Indicás cuántas docenas o pedidos necesitás.</p></article>
+            <article class="step"><div class="step-num">2</div><h3>Confirmamos</h3><p>Te contamos la disponibilidad y coordinamos tu pedido.</p></article>
+            <article class="step"><div class="step-num">3</div><h3>Preparamos</h3><p>Armamos tus huevos frescos y los dejamos listos para entregar.</p></article>
+            <article class="step"><div class="step-num">4</div><h3>Disfrutás</h3><p>Los retirás o los recibís para disfrutar la frescura de verdad.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="delivery" id="entregas">
+        <div class="container">
+          <p class="eyebrow">Consultá por tu zona</p>
+          <h2>Huevos frescos, más cerca tuyo</h2>
+          <p>Coordinamos entregas y retiros para que nunca te falten huevos de granja.</p>
+          <div class="zones">
+            <div class="zone"><b>📍 Retiro en granja</b><small>Coordiná tu horario</small></div>
+            <div class="zone"><b>🚚 Entrega a domicilio</b><small>Según zona y pedido</small></div>
+            <div class="zone"><b>🏪 Comercios</b><small>Consultá por abastecimiento</small></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="products" id="video">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow" style="color:var(--sage)">Nuestra granja</p>
+            <h2>Un vistazo real de nuestro trabajo</h2>
+            <p>Lo que hacemos cada día, en el campo y con la misma dedicación que llevamos a cada pedido.</p>
+          </div>
+          <div class="video-wrap">
+            <video controls playsinline preload="metadata" poster="assets/gallinas-grupo.jpeg">
+              <source src="assets/granja-video.mp4" type="video/mp4" />
+              Tu navegador no soporta videos HTML5.
+            </video>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact" id="contacto">
+        <div class="container contact-box">
+          <div>
+            <p class="eyebrow" style="color:var(--sage)">Hacé tu pedido</p>
+            <h2>Que no falte frescura en tu mesa</h2>
+            <p class="copy">Escribinos para consultar precios, disponibilidad y entregas. Estamos listos para preparar tu pedido.</p>
+            <div class="contact-actions">
+              <a class="button" href="https://wa.me/5493487656494?text=Hola%20Granja%20Wolff%2C%20quiero%20consultar%20por%20huevos." target="_blank" rel="noreferrer">💬 Pedir por WhatsApp</a>
+              <a class="button outline" style="color:var(--green);border-color:var(--green)" href="https://www.instagram.com/granja_wolff/" target="_blank" rel="noreferrer">📸 Ver Instagram</a>
+            </div>
+          </div>
+
+          <aside class="contact-card">
+            <p>Contactanos por</p>
+            <strong>WhatsApp / Instagram</strong>
+            <ul class="contact-list">
+              <li><a href="https://wa.me/5493487656494" target="_blank" rel="noreferrer">📱 +54 9 3487 65-6494</a></li>
+              <li><a href="https://www.instagram.com/granja_wolff/" target="_blank" rel="noreferrer">📸 @granja_wolff</a></li>
+            </ul>
+            <p class="muted-note">Consultá por retiro, entregas y pedidos para comercios.</p>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <a class="wa-float" href="https://wa.me/5493487656494?text=Hola%20Granja%20Wolff%2C%20quiero%20consultar%20por%20huevos." target="_blank" rel="noreferrer" aria-label="Hablar por WhatsApp">💬</a>
+
+    <footer>
+      <div class="container footer">
+        <a class="brand" href="#inicio"><img class="brand-mark" src="assets/logo-granja-wolff.png" alt="Logo de Granja Wolff" loading="lazy" />Granja Wolff</a>
+        <span>© <span id="year"></span> Granja Wolff · Huevos frescos de gallinas ponedoras</span>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const header = document.querySelector('header');
+      const setHeaderState = () => {
+        header.classList.toggle('scrolled', window.scrollY > 60);
+      };
+      setHeaderState();
+      window.addEventListener('scroll', setHeaderState, { passive: true });
+
+      const menuToggle = document.getElementById('menuToggle');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const menuBackdrop = document.getElementById('menuBackdrop');
+
+      const closeMenu = () => {
+        menuToggle.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        mobileMenu.classList.remove('open');
+        menuBackdrop.classList.remove('open');
+        document.body.style.overflow = '';
+      };
+      const openMenu = () => {
+        menuToggle.classList.add('open');
+        menuToggle.setAttribute('aria-expanded', 'true');
+        mobileMenu.classList.add('open');
+        menuBackdrop.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      };
+      menuToggle.addEventListener('click', () => {
+        mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
+      });
+      menuBackdrop.addEventListener('click', closeMenu);
+      mobileMenu.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
+    </script>
+  </body>
+</html>
